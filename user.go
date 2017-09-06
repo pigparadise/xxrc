@@ -132,7 +132,7 @@ func (u *User) OnChatMessage(resp *xxc.Response) {
 
 	log.Printf("OnChatMessage: <%s,%s>", resp.Result, resp.Message)
 	for _, m := range messages {
-		log.Printf("\tg:%s, u:%d, d:%d, t:%s, ct:%s, c:%s", m.Cgid, m.User, m.Date, m.Type, m.ContentType, m.Content)
+		// log.DebPrintf("\tg:%s, u:%d, d:%d, t:%s, ct:%s, c:%s", m.Cgid, m.User, m.Date, m.Type, m.ContentType, m.Content)
 		if m.Content == "help" {
 			u.SayToUserById(m.User, "SOS")
 		}

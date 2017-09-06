@@ -2,25 +2,30 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 )
-
-type Options struct {
-	ListenAddr string
-}
 
 func init() {
 	log.SetFlags(log.Flags() | log.Lshortfile)
 }
 
+func usage() {
+	fmt.Fprintf(os.Stderr, "usage: %s [config]\n", os.Args[0])
+	flag.PrintDefaults()
+	os.Exit(1)
+}
+
 func main() {
-	var options Options
-	flag.StringVar(&options.ListenAddr, "listen_addr", "0.0.0.0:10003", "listen port(0.0.0.0:10003)")
+	var listen_addr string
+	flag.StringVar(&listen_addr, "listen_addr", "0.0.0.0:10000", "listen addr(0.0.0.0:10000)")
+	flag.Usage = usage
+	flag.Parse()
 
 	logic_init()
 
-	addr := options.ListenAddr
-	log.Printf("start http service<%s>", addr)
-	log.Fatal(http.ListenAndServe(addr, nil))
+	log.Printf("start http service<%s>", listen_addr)
+	log.Fatal(http.ListenAndServe(listen_addr, nil))
 }
