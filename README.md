@@ -13,3 +13,5 @@ account: 私聊用户名
 groupid: 聊天群ID
 content：聊天内容
  ```
+### deamon
+nohup ./bin -listen_addr="ip:port" > a.log 2>&1 &

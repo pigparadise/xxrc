@@ -91,7 +91,7 @@ func _get_user(host string, user string, password string) (*User, error) {
 	return user_obj, err
 }
 
-func _return_json_response(w http.ResponseWriter, data interface{}) {
+func _retpack_json_response(w http.ResponseWriter, data interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	s, err := json.Marshal(data)
 	if err != nil {
@@ -118,7 +118,8 @@ func handle_sayto(w http.ResponseWriter, req *http.Request) {
 			"code": 10000,
 			"msg":  fmt.Sprintf("%s", err),
 		}
-		_return_json_response(w, ret)
+		_retpack_json_response(w, ret)
+		return
 	}
 
 	account := req.Form["account"]
@@ -143,5 +144,6 @@ func handle_sayto(w http.ResponseWriter, req *http.Request) {
 		"code": 200,
 		"msg":  "ok",
 	}
-	_return_json_response(w, ret)
+	_retpack_json_response(w, ret)
+	return
 }
