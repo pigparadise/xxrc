@@ -112,12 +112,16 @@ func handle_help(w http.ResponseWriter, req *http.Request) {
 
 func handle_sayto(w http.ResponseWriter, req *http.Request) {
 	req.ParseForm()
-	user_obj, err := _get_user(req.Form["host"][0], req.Form["user"][0], req.Form["password"][0])
+	host := req.Form["host"][0]
+	user := req.Form["user"][0]
+	pwd := req.Form["password"][0]
+	user_obj, err := _get_user(host, user, pwd)
 	if err != nil {
 		ret := map[string]interface{}{
 			"code": 10000,
 			"msg":  fmt.Sprintf("%s", err),
 		}
+		log.Printf("host:%s, user:%s, get user failed: %s", host, user, err)
 		_retpack_json_response(w, ret)
 		return
 	}
@@ -129,14 +133,26 @@ func handle_sayto(w http.ResponseWriter, req *http.Request) {
 	if account != nil && content != nil {
 		err := user_obj.SayToUser(account[0], content[0])
 		if err != nil {
-			log.Printf("say failed: %s", err)
+			log.Printf("host:%s, user:%s, sayto account:%s failed: %s", host, user, account[0], err)
+			ret := map[string]interface{}{
+				"code": 500,
+				"msg":  fmt.Sprintf("%s", err),
+			}
+			_retpack_json_response(w, ret)
+			return
 		}
 	}
 
 	if groupid != nil && content != nil {
 		err := user_obj.SayToGroup(groupid[0], content[0])
 		if err != nil {
-			log.Printf("say failed: %s", err)
+			log.Printf("host:%s, user:%s, sayto group:%s failed: %s", host, user, groupid[0], err)
+			ret := map[string]interface{}{
+				"code": 500,
+				"msg":  fmt.Sprintf("%s", err),
+			}
+			_retpack_json_response(w, ret)
+			return
 		}
 	}
 
