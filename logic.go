@@ -139,6 +139,7 @@ func handle_sayto(w http.ResponseWriter, req *http.Request) {
 				"msg":  fmt.Sprintf("%s", err),
 			}
 			_retpack_json_response(w, ret)
+			__del_user(g_user_mgr, host, user)
 			return
 		}
 	}
@@ -152,6 +153,7 @@ func handle_sayto(w http.ResponseWriter, req *http.Request) {
 				"msg":  fmt.Sprintf("%s", err),
 			}
 			_retpack_json_response(w, ret)
+			__del_user(g_user_mgr, host, user)
 			return
 		}
 	}
